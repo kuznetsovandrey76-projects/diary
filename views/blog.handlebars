@@ -1,0 +1,21 @@
+<div class="blog-page">
+
+<h1>Result page</h1>
+<a href="/">go home</a>
+
+{{#each items}}
+	<div class="blog-page__post">
+		<p class="blog-page__post--header">Day {{day}}</p>
+		<p class="blog-page__post--header">Today's Progress:</p>
+		<p>{{progress}}</p>
+		<p class="blog-page__post--header">Thoughts: <span class="blog-page__post--thoughts">{{thoughts}}</span></p>
+		<p class="blog-page__post--header">Useful link(s):</p> 
+		<p>{{link}}</p>
+		{{!-- <p>id: {{id}}</p> --}}
+	</div>	
+{{/each}}
+
+</div>
+
+
+

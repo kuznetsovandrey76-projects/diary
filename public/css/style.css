@@ -1,0 +1,28 @@
+body {
+	margin: 1em 0 0;
+	padding: 0;
+	font-family: sans-serif;
+}
+
+label {
+	display: block;
+}
+
+.index-page,
+.blog-page {
+	width: 80%;
+	margin: 0 auto;	
+}
+
+.blog-page__post {
+	border: 1px solid;
+	background: khaki;
+	padding: 10px;
+	margin: 10px;
+}
+.blog-page__post--header {
+	font-weight: bold;
+}
+.blog-page__post--thoughts {
+	font-weight: normal;
+}
