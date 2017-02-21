@@ -6,6 +6,7 @@ var db = require('./my_modules/db.js');
 const bodyParser = require('body-parser');
 
 var handlebars  = require('express-handlebars')
+// main - это основной макет main.handlebars
 	.create({defaultLayout:'main'});
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
@@ -13,6 +14,8 @@ app.set('view engine', 'handlebars');
 var mongoose = require('mongoose');
 // mongoose.connect('mongodb://<dbuser>:<dbpassword>...');
 mongoose.connect(db.url);
+
+var marked = require('marked');
 
 var Post = mongoose.model('diary-programming', { 
 	day: String,
@@ -43,7 +46,8 @@ app.get(['/', '/index.html'], function(req, res) {
 });
 
 app.get('/blog', function(req, res) {
-	Post.find({}).then(function(local) {
+	// в local массив с объектами и db [{},{}]
+	Post.find({}, { _id: 0, __v: 0 }).then(function(local) {
 		res.render('blog', {items: local});
 	});
 });

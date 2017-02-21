@@ -1,19 +1,29 @@
 <div class="index-page">
-	<a href="/blog">blog page</a><br>
+	<div class="index-page--block index-page__input">
+		<h1 class="index-page--header">Write a <a class="link" href="/blog">blog</a> post</h1>
 
-	<form action="/blog">
-		<label for="day">day:</label>
-			<input id="day" type="text" placeholder="48: February 19, Sunday">
-		<label for="progress">progress:</label>
-			<input id="progress" type="text">
-		<label for="thoughts">thoughts:</label>	
-			<textarea id="thoughts" cols="20" rows="5" wrap="virtual"></textarea>
-		<label for="link">link:</label>
-			<input id="link" type="text"><br>
-		<input id="sendToServer" type="submit" value="send">
-	</form>
+		<form action="/blog" class="index-page__form">
+			<label for="day">What day is today?</label>
+				<input id="day" type="text" placeholder="75: March 18, Saturday">
+			<label for="progress">Today's Progress:</label>
+				<textarea id="progress" cols="20" rows="5" wrap="virtual"></textarea>
+			<label for="thoughts">Thoughts:</label>	
+				<textarea id="thoughts" cols="20" rows="5" wrap="virtual"></textarea>
+			<label for="link">Useful link(s):</label>
+				<textarea id="link" cols="20" rows="5" wrap="virtual"></textarea><br>
+			<input id="sendToServer" class="index-page__form--submit" type="submit" value="SEND">
+		</form>
+	</div>{{!-- 
+--}}<div class="index-page--block index-page__output">
+		<h1 class="index-page--header">Check the result</h1>
+		<div class="index-page__output-result">
+			<p class="index-page__output-result--text">Day <span id="dayResult"></span></p>
+			<p class="index-page__output-result--text">Today's Progress:<span class="index-page__output-result--marked" id="progressResult"></span></p>
+			<p class="index-page__output-result--text">Thoughts:<span class="index-page__output-result--marked" id="thoughtsResult"></span></p>
+			<p class="index-page__output-result--text">Useful link(s):<span class="index-page__output-result--marked" id="linkResult"></span></p>
+		</div>
+	</div>
 </div>
-
 <script>
 	sendToServer.addEventListener("click", function() {
 		var data = {
@@ -22,11 +32,21 @@
 			thoughts: thoughts.value,
 			link: link.value
 		}
-
 		var xhr = new XMLHttpRequest();
 		xhr.open("POST", '/save');
 		xhr.setRequestHeader('Content-Type', 'application/json; charset=utf8');
 		xhr.send(JSON.stringify(data));
-
 	});
+	day.addEventListener('keyup', function() {
+			dayResult.innerHTML = day.value;
+		})
+	progress.addEventListener('keyup', function() {
+			progressResult.innerHTML = marked(progress.value);
+		})
+	thoughts.addEventListener('keyup', function() {
+			thoughtsResult.innerHTML = marked(thoughts.value);
+		})
+	link.addEventListener('keyup', function() {
+			linkResult.innerHTML = marked(link.value);
+		})
 </script>

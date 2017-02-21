@@ -1,21 +1,42 @@
-<div class="blog-page">
-
-<h1>Result page</h1>
-<a href="/">go home</a>
-
+<div id="tempDiv" class="hide">
 {{#each items}}
-	<div class="blog-page__post">
-		<p class="blog-page__post--header">Day {{day}}</p>
-		<p class="blog-page__post--header">Today's Progress:</p>
-		<p>{{progress}}</p>
-		<p class="blog-page__post--header">Thoughts: <span class="blog-page__post--thoughts">{{thoughts}}</span></p>
-		<p class="blog-page__post--header">Useful link(s):</p> 
-		<p>{{link}}</p>
-		{{!-- <p>id: {{id}}</p> --}}
-	</div>	
+	{{!-- === - нужны чтобы легче разделять пост на части  --}}
+	<p>{{day}}==={{progress}}==={{thoughts}}==={{link}}</p>
 {{/each}}
-
 </div>
+
+<div class="blog-page">
+	<h1 class="blog-page__header blog-page__header--text">150 Days until Summer</h1>
+	<a class="blog-page__header blog-page__header--link link" href="/">(write a new blog post)</a>
+
+	<div class="blog-page__content" id="res"></div>
+</div>
+
+<script>
+	// 1.
+	var ListOfPosts = [];
+	// Собираю все посты в HTMLCollection - псевдо []
+	var temp = tempDiv.children;
+	var tempArr = Array.from(temp);
+	tempArr.forEach(function(item) {
+		ListOfPosts.push(item.textContent.split("==="));
+	});
+
+	// 2.
+	ListOfPosts = ListOfPosts.reverse();
+	ListOfPosts.forEach( function(item) {
+		res.innerHTML +=  
+		`<div class="blog-page__content-post">` + 
+			`<p class="blog-page__content-post--header">Day` + item[0] + `</p>` +
+			`<p class="blog-page__content-post--header">Today's Progress:</p>` +
+			marked(item[1]) +
+			`<p class="blog-page__content-post--header">Thoughts:</p>` +
+			marked(item[2]) +
+			`<p class="blog-page__content-post--header">Useful link(s):</p>` +
+ 			marked(item[3]) +
+		`</div>`; 
+	});
+</script>
 
 
 
