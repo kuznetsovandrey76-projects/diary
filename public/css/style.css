@@ -56,9 +56,9 @@ ol, ul {
 }
 .index-page__output-result--marked,
 /* Выбрать элементы без классов (ex. автоматически сгенерированный контент)*/
-.blog-page__content-post *:not([class]) {
+.blog-page__content-post *:not([class]){
 	font-weight: normal;
-	font-size: .9em;
+	font-size: 12px;
 	color: rgba(0, 0, 0, .8);
 }
 label {
