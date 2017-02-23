@@ -32,3 +32,6 @@ var Post = mongoose.model('YOUR-COLLECTOIONS-NAME', {
 
 
 npm install --save bcryptjs connect-flash cookie-parser express-messages express-session express-validator passport passport-http passport-local
+
+12. touch Procfile
+	web: node server.js
