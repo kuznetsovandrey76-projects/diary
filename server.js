@@ -1,9 +1,17 @@
 var express = require('express');
-var app = express();
 
-const MongoClient = require('mongodb').MongoClient;
+var MongoClient = require('mongodb').MongoClient;
 var db = require('./my_modules/db.js');
-const bodyParser = require('body-parser');
+var bodyParser = require('body-parser');
+
+// add it
+var cookieParser = require('cookie-parser');
+var expressValidator = require('express-validator');
+var session = require('express-session');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+
+var app = express();
 
 var handlebars  = require('express-handlebars')
 // main - это основной макет main.handlebars
@@ -15,7 +23,10 @@ var mongoose = require('mongoose');
 // mongoose.connect('mongodb://<dbuser>:<dbpassword>...');
 mongoose.connect(db.url);
 
-var marked = require('marked');
+var home = require('./routes/home');
+var login = require('./routes/login');
+
+// Init App
 
 var Post = mongoose.model('diary-programming', { 
 	day: String,
@@ -24,9 +35,42 @@ var Post = mongoose.model('diary-programming', {
 	link: String
 });
 
-app.set('port', process.env.PORT || 8080);
+// Set Static Folder
 app.use(express.static(__dirname + '/public'));	
+
+// BodyParser Middleware
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+
+// Express Session
+app.use(session({
+    secret: 'secret',
+    saveUninitialized: true,
+    resave: true
+}));
+
+// Passport init
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Express Validator
+app.use(expressValidator({
+  errorFormatter: function(param, msg, value) {
+      var namespace = param.split('.')
+      , root    = namespace.shift()
+      , formParam = root;
+
+    while(namespace.length) {
+      formParam += '[' + namespace.shift() + ']';
+    }
+    return {
+      param : formParam,
+      msg   : msg,
+      value : value
+    };
+  }
+}));
 
 // POST
 app.post('/save', function(req, res) {
@@ -41,16 +85,16 @@ app.post('/save', function(req, res) {
 });
 
 // GET
-app.get(['/', '/index.html'], function(req, res) {
-	res.render('index');
-});
-
 app.get('/blog', function(req, res) {
 	// в local массив с объектами и db [{},{}]
 	Post.find({}, { _id: 0, __v: 0 }).then(function(local) {
 		res.render('blog', {items: local});
 	});
 });
+
+// app.use - Middleware
+app.use('/', home);
+app.use('/enter', login);
 
 // NOT FOUND
 app.use(function(req, res, next) {
@@ -64,6 +108,8 @@ app.use(function(err, req, res, next) {
 });
 
 // NODE SERVER.JS
+app.set('port', process.env.PORT || 8080);
+
 app.listen(app.get('port'), function() {
 	console.log('Express запущен на http://localhost:' + 
 		app.get('port') + ': нажмите CTRL+C для завершения');

@@ -29,3 +29,6 @@ var Post = mongoose.model('YOUR-COLLECTOIONS-NAME', {
 10. mkdir views/layouts public/{css,img} my_modules -p
 
 11.	touch views/layouts/main.handlebars views/{404.handlebars,500.handlebars,index.handlebars,blog.handlebars} public/css/style.css my_modules/db.js .gitignore
+
+
+npm install --save bcryptjs connect-flash cookie-parser express-messages express-session express-validator passport passport-http passport-local
